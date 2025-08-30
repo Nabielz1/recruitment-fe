@@ -90,7 +90,6 @@ const ProfilePage: React.FC = () => {
                     </div>
                 </section>
 
-                {/* ===== BAGIAN YANG DIPERBARUI DIMULAI DI SINI ===== */}
                 <section>
                     <h2 className="text-lg font-semibold text-gray-700 border-b pb-2 mb-4">Address Information</h2>
                     
@@ -113,7 +112,6 @@ const ProfilePage: React.FC = () => {
                         </div>
                     </div>
                 </section>
-                {/* ===== BAGIAN YANG DIPERBARUI SELESAI DI SINI ===== */}
 
                 <section>
                     <h2 className="text-lg font-semibold text-gray-700 border-b pb-2 mb-4">Education</h2>
