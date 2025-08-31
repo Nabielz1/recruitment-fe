@@ -45,9 +45,6 @@ const Layout = () => {
                     <NavLink to="/my-applications" className={({ isActive }) => isActive ? activeLinkStyle : inactiveLinkStyle}>
                       My Applications
                     </NavLink>
-                    <NavLink to="/uploads" className={({ isActive }) => isActive ? activeLinkStyle : inactiveLinkStyle}>
-                      Upload Documents
-                    </NavLink>
                   </>
                 )}
 

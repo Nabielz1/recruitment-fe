@@ -15,6 +15,11 @@ export const getAdminApplications = async (page = 1, limit = 10, status = ''): P
     return response.data.data;
 };
 
+export const getAdminApplicationDetail = async (id: string): Promise<JobApplication> => {
+    const response = await api.get(`/admin/applications/${id}`);
+    return response.data.data;
+};
+
 export const updateApplicationStatus = async (id: number, status: 'accepted' | 'rejected', notes: string = '') => {
     const response = await api.put(`/admin/applications/${id}/status`, {
         status,

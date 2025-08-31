@@ -1,9 +1,12 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import type { JobApplication } from '../../types';
 import { getAdminApplications, updateApplicationStatus } from '../../services/adminService';
+import Swal from 'sweetalert2';
+import 'sweetalert2/dist/sweetalert2.min.css';
 import "../../App.css";
 
-const AdminDashboardPage = () => {
+const AdminDashboardPage: React.FC = () => {
     const [applications, setApplications] = useState<JobApplication[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -12,7 +15,9 @@ const AdminDashboardPage = () => {
         try {
             setLoading(true);
             const data = await getAdminApplications();
-            setApplications(data.applications);
+            // ===== PERUBAHAN DI SINI: Mengurutkan data di frontend =====
+            const sortedApplications = data.applications.sort((a, b) => new Date(b.applied_at).getTime() - new Date(a.applied_at).getTime());
+            setApplications(sortedApplications);
             setError(null);
         } catch (error) {
             console.error("Failed to fetch admin applications", error);
@@ -26,24 +31,42 @@ const AdminDashboardPage = () => {
         fetchApplications();
     }, []);
 
-    // Fungsi untuk menangani update status
-    const handleStatusUpdate = async (id: number, status: 'accepted' | 'rejected') => {
-        const originalApplications = [...applications];
-        
-        // Update UI secara optimis untuk respons yang lebih cepat
-        const updatedApplications = applications.map(app =>
-            app.id === id ? { ...app, status: status } : app
-        );
-        setApplications(updatedApplications);
+    const handleStatusUpdate = (id: number, status: 'accepted' | 'rejected') => {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: `You are about to ${status} this application. This action cannot be undone.`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: `Yes, ${status} it!`,
+            cancelButtonText: 'Cancel'
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                const originalApplications = [...applications];
+                const updatedApplications = applications.map(app =>
+                    app.id === id ? { ...app, status: status } : app
+                );
+                setApplications(updatedApplications);
 
-        try {
-            await updateApplicationStatus(id, status, `Status updated by admin.`);
-        } catch (error) {
-            console.error(`Failed to update status for application ${id}`, error);
-            // Jika gagal, kembalikan ke state semula dan tampilkan error
-            setApplications(originalApplications);
-            alert(`Failed to update status. Please try again.`);
-        }
+                try {
+                    await updateApplicationStatus(id, status, `Status updated by admin.`);
+                    Swal.fire(
+                        'Success!',
+                        `The application has been ${status}.`,
+                        'success'
+                    );
+                } catch (error) {
+                    console.error(`Failed to update status for application ${id}`, error);
+                    setApplications(originalApplications);
+                    Swal.fire(
+                        'Failed!',
+                        'Failed to update status. Please try again.',
+                        'error'
+                    );
+                }
+            }
+        });
     };
 
     if (loading) return <p className="text-center">Loading all applications...</p>;
@@ -60,7 +83,6 @@ const AdminDashboardPage = () => {
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Position</th>
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Applied At</th>
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                            {/* Tambah kolom baru untuk Aksi */}
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                         </tr>
                     </thead>
@@ -77,14 +99,19 @@ const AdminDashboardPage = () => {
                                         {app.status}
                                     </span>
                                 </td>
-                                {/* Tambah sel baru untuk tombol Aksi */}
-                                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
-                                    {app.status === 'pending' && (
-                                        <>
-                                            <button onClick={() => handleStatusUpdate(app.id, 'accepted')} className="text-indigo-600 hover:text-indigo-900">Accept</button>
-                                            <button onClick={() => handleStatusUpdate(app.id, 'rejected')} className="text-red-600 hover:text-red-900">Reject</button>
-                                        </>
-                                    )}
+                                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                    <div className="flex items-center space-x-4">
+                                        <Link to={`/admin/application/${app.id}`} className="text-blue-600 hover:text-blue-900">
+                                            Detail
+                                        </Link>
+                                        
+                                        {app.status === 'pending' && (
+                                            <div className="pl-4 border-l border-gray-300 space-x-4">
+                                                <button onClick={() => handleStatusUpdate(app.id, 'accepted')} className="text-indigo-600 hover:text-indigo-900">Accept</button>
+                                                <button onClick={() => handleStatusUpdate(app.id, 'rejected')} className="text-red-600 hover:text-red-900">Reject</button>
+                                            </div>
+                                        )}
+                                    </div>
                                 </td>
                             </tr>
                         ))}

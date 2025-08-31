@@ -11,7 +11,9 @@ const MyApplicationsPage = () => {
     const fetchApplications = async () => {
         try {
             const data = await getUserApplications();
-            setApplications(data);
+            // ===== PERUBAHAN DI SINI: Mengurutkan data berdasarkan tanggal terbaru =====
+            const sortedData = data.sort((a, b) => new Date(b.applied_at).getTime() - new Date(a.applied_at).getTime());
+            setApplications(sortedData);
         } catch (error) {
             console.error("Failed to fetch applications", error);
         } finally {
@@ -28,7 +30,7 @@ const MyApplicationsPage = () => {
         try {
             await submitApplication();
             setMessage({ type: 'success', text: 'Application submitted successfully! It will appear below shortly.' });
-            // Refresh list after a short delay
+            // Refresh list after a short delay to get the latest data
             setTimeout(() => fetchApplications(), 1000);
         } catch (error: any) {
             setMessage({ type: 'error', text: error.response?.data?.error || 'Failed to submit application. Please complete your profile first.' });
