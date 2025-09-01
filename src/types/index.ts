@@ -1,6 +1,3 @@
-// src/types/index.ts
-
-// Pastikan ada kata "export" di depan setiap interface
 export interface User {
   id: number;
   email: string;
@@ -16,15 +13,6 @@ export interface LoginResponse {
 export type UserCredentials = Omit<User, 'id' | 'role' | 'is_active'> & { password?: string };
 export type UserRegister = UserCredentials & { role?: string };
 
-// Tipe baru untuk data pendidikan
-export interface Education {
-  last_education: string;
-  university_name: string;
-  major: string;
-  gpa: string;
-}
-
-// Pastikan interface ini diekspor
 export interface ApplicantProfile {
   id: number;
   user_id: number;
@@ -33,9 +21,11 @@ export interface ApplicantProfile {
   full_name: string;
   sex: string;
   place_of_birth: string;
-  date_of_birth: string; // YYYY-MM-DD
-  // ---- Menggunakan tipe Education dalam bentuk array ----
-  education: Education[];
+  date_of_birth: string;
+  last_education: string; 
+  university_name: string;
+  major: string;
+  gpa: string;
   home_address: string;
   city: string;
   postal_code: string;
@@ -55,8 +45,6 @@ export interface ApplicantProfile {
   driver_license_type: string;
   driver_license_number: string;
   daily_transportation: string;
-
-  // ---- Path untuk dokumen yang diunggah ditambahkan di sini ----
   photo_path?: string;
   diploma_path?: string;
   transcript_path?: string;

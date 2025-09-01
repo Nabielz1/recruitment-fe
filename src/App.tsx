@@ -9,9 +9,10 @@ import NotFoundPage from './pages/NotFoundPage';
 import Layout from './components/Layout';
 import ProtectedRoute from './middleware/ProtectedRoute';
 import AdminRoute from './middleware/AdminRoute';
-import ApplicantRoute from './middleware/ApplicantRoute'; // <-- 1. Import ApplicantRoute
+import ApplicantRoute from './middleware/ApplicantRoute';
 import RoleRedirect from './middleware/RoleRedirect';
 import ApplicationDetailPage from './pages/admin/ApplicationDetailPage';
+import UploadsPage from './pages/UploadPage';
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
         <Route path="dashboard" element={<ApplicantRoute><DashboardPage /></ApplicantRoute>} />
         <Route path="profile" element={<ApplicantRoute><ProfilePage /></ApplicantRoute>} />
         <Route path="my-applications" element={<ApplicantRoute><MyApplicationsPage /></ApplicantRoute>} />
+        <Route path="uploads" element={<ApplicantRoute><UploadsPage /></ApplicantRoute>} />
         
         {/* Rute khusus Admin (sudah dilindungi oleh AdminRoute) */}
         <Route 

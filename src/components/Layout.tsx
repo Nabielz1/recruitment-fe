@@ -24,30 +24,27 @@ const Layout = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16">
             <div className="flex">
-              {/* Link logo akan diarahkan otomatis oleh RoleRedirect */}
               <Link to="/" className="flex-shrink-0 flex items-center font-bold text-xl text-indigo-600">
                 Recruitment
               </Link>
               <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
-                
-                {user && user.role === 'applicant' && (
-                  // ===== PASTIKAN to="/dashboard" DI SINI =====
-                  <NavLink to="/dashboard" end className={({ isActive }) => isActive ? activeLinkStyle : inactiveLinkStyle}>
-                    Dashboard
-                  </NavLink>
-                )}
-
                 {user && user.role === 'applicant' && (
                   <>
+                    <NavLink to="/dashboard" end className={({ isActive }) => isActive ? activeLinkStyle : inactiveLinkStyle}>
+                      Dashboard
+                    </NavLink>
                     <NavLink to="/profile" className={({ isActive }) => isActive ? activeLinkStyle : inactiveLinkStyle}>
                       Profile
                     </NavLink>
                     <NavLink to="/my-applications" className={({ isActive }) => isActive ? activeLinkStyle : inactiveLinkStyle}>
                       My Applications
                     </NavLink>
+                    {/* Kembalikan Menu Upload Documents */}
+                    <NavLink to="/uploads" className={({ isActive }) => isActive ? activeLinkStyle : inactiveLinkStyle}>
+                      Upload Documents
+                    </NavLink>
                   </>
                 )}
-
                 {user && (user.role === 'admin' || user.role === 'hrd') && (
                     <NavLink to="/admin/dashboard" className={({ isActive }) => isActive ? activeAdminLinkStyle : inactiveAdminLinkStyle}>
                         Admin Dashboard
