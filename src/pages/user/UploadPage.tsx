@@ -1,8 +1,8 @@
 import { useEffect, useState, useCallback } from 'react';
-import UploadItem from '../../components/UploadItem';
+import UploadItem from '../../components/ui/UploadItem';
 import { getProfile } from '../../services/user/profileService';
 import type { ApplicantProfile } from '../../types';
-import "../../App.css";
+import "../../styles/App.css";
 
 const documentList = [
   { label: 'Profile Photo (.jpg, .png)', uploadType: 'photo', key: 'photo_path' },

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { uploadFile } from '../services/user/uploadService';
+import { uploadFile } from '../../services/user/uploadService';
 
 interface UploadItemProps {
   label: string;

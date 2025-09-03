@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { getAdminApplicationDetail } from '../../services/admin/adminService';
 import type { JobApplication } from '../../types';
+import "../../styles/App.css";
 
 const ApplicationDetailPage: React.FC = () => {
     const { id } = useParams<{ id: string }>();

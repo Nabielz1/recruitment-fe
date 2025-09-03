@@ -6,7 +6,7 @@ import ProfilePage from './pages/user/ProfilePage';
 import MyApplicationsPage from './pages/user/MyApplicationsPage';
 import AdminDashboardPage from './pages/admin/AdminDashboardPage';
 import NotFoundPage from './pages/NotFoundPage';
-import Layout from './components/Layout';
+import Layout from './components/layouts/Layout';
 import ProtectedRoute from './middleware/ProtectedRoute';
 import AdminRoute from './middleware/AdminRoute';
 import ApplicantRoute from './middleware/ApplicantRoute';

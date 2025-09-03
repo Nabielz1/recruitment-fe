@@ -4,7 +4,7 @@ import type { ApplicantProfile } from '../../types';
 import { getProfile, createOrUpdateProfile } from '../../services/user/profileService';
 import Input from '../../components/ui/Input';
 import Select from '../../components/ui/Select';
-import "../../App.css";
+import "../../styles/App.css";
 
 const ProfilePage: React.FC = () => {
     // State untuk mengelola bagian mana yang aktif, default ke 'personal-information'
