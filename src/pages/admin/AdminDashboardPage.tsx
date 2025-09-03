@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import type { JobApplication } from '../../types';
-import { getAdminApplications, updateApplicationStatus } from '../../services/adminService';
+import { getAdminApplications, updateApplicationStatus, deleteApplication } from '../../services/adminService';
 import Swal from 'sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
 import "../../App.css";
@@ -15,7 +15,6 @@ const AdminDashboardPage: React.FC = () => {
         try {
             setLoading(true);
             const data = await getAdminApplications();
-            // ===== PERUBAHAN DI SINI: Mengurutkan data di frontend =====
             const sortedApplications = data.applications.sort((a, b) => new Date(b.applied_at).getTime() - new Date(a.applied_at).getTime());
             setApplications(sortedApplications);
             setError(null);
@@ -69,6 +68,42 @@ const AdminDashboardPage: React.FC = () => {
         });
     };
 
+    const handleDelete = (id: number) => {
+        Swal.fire({
+            title: 'Are you sure you want to delete this?',
+            text: "This action cannot be undone.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'Cancel'
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                const originalApplications = [...applications];
+                const updatedApplications = applications.filter(app => app.id !== id);
+                setApplications(updatedApplications);
+
+                try {
+                    await deleteApplication(id);
+                    Swal.fire(
+                        'Deleted!',
+                        'The application has been deleted.',
+                        'success'
+                    );
+                } catch (error) {
+                    console.error(`Failed to delete application ${id}`, error);
+                    setApplications(originalApplications);
+                    Swal.fire(
+                        'Failed!',
+                        'Failed to delete the application. Please try again.',
+                        'error'
+                    );
+                }
+            }
+        });
+    };
+    
     if (loading) return <p className="text-center">Loading all applications...</p>;
     if (error) return <p className="text-center text-red-500">{error}</p>;
 
@@ -83,6 +118,7 @@ const AdminDashboardPage: React.FC = () => {
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Position</th>
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Applied At</th>
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Approval</th>
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                         </tr>
                     </thead>
@@ -100,17 +136,21 @@ const AdminDashboardPage: React.FC = () => {
                                     </span>
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                    {app.status === 'pending' ? (
+                                        <div className="flex items-center space-x-4">
+                                            <button onClick={() => handleStatusUpdate(app.id, 'accepted')} className="text-indigo-600 hover:text-indigo-900">Accept</button>
+                                            <button onClick={() => handleStatusUpdate(app.id, 'rejected')} className="text-red-600 hover:text-red-900">Reject</button>
+                                        </div>
+                                    ) : (
+                                        <span className="text-gray-400">-</span>
+                                    )}
+                                </td>
+                                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                     <div className="flex items-center space-x-4">
                                         <Link to={`/admin/application/${app.id}`} className="text-blue-600 hover:text-blue-900">
                                             Detail
                                         </Link>
-                                        
-                                        {app.status === 'pending' && (
-                                            <div className="pl-4 border-l border-gray-300 space-x-4">
-                                                <button onClick={() => handleStatusUpdate(app.id, 'accepted')} className="text-indigo-600 hover:text-indigo-900">Accept</button>
-                                                <button onClick={() => handleStatusUpdate(app.id, 'rejected')} className="text-red-600 hover:text-red-900">Reject</button>
-                                            </div>
-                                        )}
+                                        <button onClick={() => handleDelete(app.id)} className="text-red-600 hover:text-red-900">Delete</button>
                                     </div>
                                 </td>
                             </tr>

@@ -27,3 +27,7 @@ export const updateApplicationStatus = async (id: number, status: 'accepted' | '
     });
     return response.data;
 };
+
+export const deleteApplication = async (id: number): Promise<void> => {
+    await api.delete(`/admin/applications/${id}`);
+};
