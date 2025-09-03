@@ -1,5 +1,5 @@
-import api from '../api/axiosInstance';
-import type { ApplicantProfile } from "../types";
+import api from '../../api/axiosInstance';
+import type { ApplicantProfile } from "../../types";
 
 export const getProfile = async (): Promise<ApplicantProfile> => {
     const response = await api.get('/profile');

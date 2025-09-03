@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import type { JobApplication } from '../../types';
-import { getAdminApplications, updateApplicationStatus, deleteApplication } from '../../services/adminService';
+import { getAdminApplications, updateApplicationStatus, deleteApplication } from '../../services/admin/adminService';
 import Swal from 'sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
 import "../../App.css";

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import type { JobApplication } from '../types';
-import { getUserApplications, submitApplication } from '../services/applicationService';
-import "../App.css";
+import type { JobApplication } from '../../types';
+import { getUserApplications, submitApplication } from '../../services/applicationService';
+import "../../App.css";
 
 const MyApplicationsPage = () => {
     const [applications, setApplications] = useState<JobApplication[]>([]);

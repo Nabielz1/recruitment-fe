@@ -1,5 +1,5 @@
-import api from '../api/axiosInstance';
-import type { JobApplication } from "../types";
+import api from '../../api/axiosInstance';
+import type { JobApplication } from "../../types";
 
 interface AdminApplicationsResponse {
     applications: JobApplication[];

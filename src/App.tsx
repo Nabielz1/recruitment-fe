@@ -1,9 +1,9 @@
 import { Routes, Route } from 'react-router-dom';
-import LoginPage from './pages/LoginPage';
-import RegisterPage from './pages/RegisterPage';
-import DashboardPage from './pages/DashboardPage';
-import ProfilePage from './pages/ProfilePage';
-import MyApplicationsPage from './pages/MyApplicationsPage';
+import LoginPage from './pages/auth/LoginPage';
+import RegisterPage from './pages/auth/RegisterPage';
+import DashboardPage from './pages/user/DashboardPage';
+import ProfilePage from './pages/user/ProfilePage';
+import MyApplicationsPage from './pages/user/MyApplicationsPage';
 import AdminDashboardPage from './pages/admin/AdminDashboardPage';
 import NotFoundPage from './pages/NotFoundPage';
 import Layout from './components/Layout';
@@ -12,7 +12,7 @@ import AdminRoute from './middleware/AdminRoute';
 import ApplicantRoute from './middleware/ApplicantRoute';
 import RoleRedirect from './middleware/RoleRedirect';
 import ApplicationDetailPage from './pages/admin/ApplicationDetailPage';
-import UploadsPage from './pages/UploadPage';
+import UploadsPage from './pages/user/UploadPage';
 
 function App() {
   return (

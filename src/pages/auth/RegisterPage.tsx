@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { registerUser } from '../services/authService';
-import Input from '../components/ui/Input';
-import "../App.css";
+import { registerUser } from '../../services/auth/authService';
+import Input from '../../components/ui/Input';
+import "../../App.css";
 
 const RegisterPage: React.FC = () => {
     const [email, setEmail] = useState('');

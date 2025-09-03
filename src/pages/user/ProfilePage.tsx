@@ -1,9 +1,10 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useForm, type SubmitHandler } from 'react-hook-form';
-import type { ApplicantProfile } from '../types';
-import { getProfile, createOrUpdateProfile } from '../services/profileService';
-import Input from '../components/ui/Input';
-import Select from '../components/ui/Select';
+import type { ApplicantProfile } from '../../types';
+import { getProfile, createOrUpdateProfile } from '../../services/user/profileService';
+import Input from '../../components/ui/Input';
+import Select from '../../components/ui/Select';
+import "../../App.css";
 
 const ProfilePage: React.FC = () => {
     // State untuk mengelola bagian mana yang aktif, default ke 'personal-information'

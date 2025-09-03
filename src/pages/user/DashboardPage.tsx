@@ -1,6 +1,6 @@
-import { useAuth } from '../hooks/useAuth';
+import { useAuth } from '../../hooks/useAuth';
 import { Link } from 'react-router-dom';
-import "../App.css";
+import "../../App.css";
 
 const DashboardPage = () => {
     const { user } = useAuth();
