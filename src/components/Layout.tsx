@@ -1,10 +1,11 @@
-import { Outlet, NavLink, useNavigate, Link } from 'react-router-dom';
+import { Outlet, NavLink, useNavigate, Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import { logoutUser } from '../services/auth/authService';
 
 const Layout = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleLogout = () => {
     logoutUser();
@@ -17,6 +18,8 @@ const Layout = () => {
   
   const activeAdminLinkStyle = "inline-flex items-center px-1 pt-1 border-b-2 border-red-500 text-sm font-medium text-red-600";
   const inactiveAdminLinkStyle = "inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-red-500 hover:border-red-300 hover:text-red-700";
+
+  const isAdminPath = location.pathname.startsWith('/admin');
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -39,14 +42,16 @@ const Layout = () => {
                     <NavLink to="/my-applications" className={({ isActive }) => isActive ? activeLinkStyle : inactiveLinkStyle}>
                       My Applications
                     </NavLink>
-                    {/* Kembalikan Menu Upload Documents */}
                     <NavLink to="/uploads" className={({ isActive }) => isActive ? activeLinkStyle : inactiveLinkStyle}>
                       Upload Documents
                     </NavLink>
                   </>
                 )}
                 {user && (user.role === 'admin' || user.role === 'hrd') && (
-                    <NavLink to="/admin/dashboard" className={({ isActive }) => isActive ? activeAdminLinkStyle : inactiveAdminLinkStyle}>
+                    <NavLink 
+                        to="/admin/dashboard" 
+                        className={isAdminPath ? activeAdminLinkStyle : inactiveAdminLinkStyle}
+                    >
                         Admin Dashboard
                     </NavLink>
                 )}
