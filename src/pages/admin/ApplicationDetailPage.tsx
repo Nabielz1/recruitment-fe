@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { getAdminApplicationDetail } from '../../services/adminService';
-import type { JobApplication, Education } from '../../types';
+import { getAdminApplicationDetail } from '../../services/admin/adminService';
+import type { JobApplication } from '../../types';
 
 const ApplicationDetailPage: React.FC = () => {
     const { id } = useParams<{ id: string }>();
@@ -119,15 +119,12 @@ const ApplicationDetailPage: React.FC = () => {
                     {/* --- Education --- */}
                     <section>
                          <h2 className="text-xl font-semibold text-gray-700 border-b pb-3 mb-4">Education</h2>
-                         <div className="space-y-4">
-                            {(profile.education && profile.education.length > 0) ? profile.education.map((edu: Education, index: number) => (
-                                <div key={index} className="p-4 border rounded-md">
-                                    <h3 className="font-bold text-gray-800">{edu.university_name}</h3>
-                                    <p className="text-gray-600">{edu.last_education} in {edu.major}</p>
-                                    <p className="text-gray-600">GPA: {edu.gpa}</p>
-                                </div>
-                            )) : <p>No education data provided.</p>}
-                         </div>
+                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            {renderField("Last Education", profile.last_education)}
+                            {renderField("University Name", profile.university_name)}
+                            {renderField("Major", profile.major)}
+                            {renderField("GPA", profile.gpa)}
+                        </div>
                     </section>
                     
                     {/* --- Job Preferences --- */}
