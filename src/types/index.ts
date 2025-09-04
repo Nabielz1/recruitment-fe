@@ -11,7 +11,10 @@ export interface LoginResponse {
 }
 
 export type UserCredentials = Omit<User, 'id' | 'role' | 'is_active'> & { password?: string };
-export type UserRegister = UserCredentials & { role?: string };
+export type UserRegister = UserCredentials & { 
+  role?: string;
+  confirm_password?: string;
+};
 
 export interface ApplicantProfile {
   id: number;

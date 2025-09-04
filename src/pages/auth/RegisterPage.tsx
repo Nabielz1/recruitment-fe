@@ -7,6 +7,7 @@ import "../../styles/App.css";
 const RegisterPage: React.FC = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [confirm_password, setConfirmPassword] = useState('');
     const [error, setError] = useState<string | null>(null);
     const [success, setSuccess] = useState<string | null>(null);
     const navigate = useNavigate();
@@ -15,12 +16,16 @@ const RegisterPage: React.FC = () => {
         e.preventDefault();
         setError(null);
         setSuccess(null);
+        if(password !== confirm_password){
+            setError("Password and confirm password do not match.");
+            return;
+        }
         if(password.length < 6){
             setError("Password must be at least 6 characters long.");
             return;
         }
         try {
-            await registerUser({ email, password, role: 'applicant' });
+            await registerUser({ email, password, confirm_password, role: 'applicant' });
             setSuccess("Registration successful! You can now log in.");
             setTimeout(() => navigate('/login'), 2000);
         } catch (err: any) {
@@ -48,6 +53,8 @@ const RegisterPage: React.FC = () => {
                         {success && <p className="text-green-500 text-sm text-center">{success}</p>}
                         <Input label="Email address" id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
                         <Input label="Password" id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+                        {/* Pastikan input ini ada di JSX Anda */}
+                        <Input label="Confirm Password" id="confirm-password" type="password" value={confirm_password} onChange={(e) => setConfirmPassword(e.target.value)} required />
                         <div>
                             <button
                                 type="submit"
