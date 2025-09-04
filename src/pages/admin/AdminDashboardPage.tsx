@@ -4,7 +4,7 @@ import type { JobApplication } from '../../types';
 import { getAdminApplications, updateApplicationStatus, deleteApplication } from '../../services/admin/adminService';
 import Swal from 'sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
-import "../../App.css";
+import "../../styles/App.css";
 
 const AdminDashboardPage: React.FC = () => {
     const [applications, setApplications] = useState<JobApplication[]>([]);
