@@ -13,6 +13,7 @@ import ApplicantRoute from './middleware/ApplicantRoute';
 import RoleRedirect from './middleware/RoleRedirect';
 import ApplicationDetailPage from './pages/admin/ApplicationDetailPage';
 import UploadsPage from './pages/user/UploadPage';
+import EmployeeManagementPage from './pages/admin/EmployeeManagementPage';
 
 function App() {
   return (
@@ -55,6 +56,15 @@ function App() {
               <ApplicationDetailPage />
             </AdminRoute>
           }
+        />
+
+        <Route 
+          path="/admin/employees" 
+          element={
+            <AdminRoute>
+              <EmployeeManagementPage />
+            </AdminRoute>
+          } 
         />
       </Route>
 

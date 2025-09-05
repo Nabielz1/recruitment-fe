@@ -67,3 +67,17 @@ export interface JobApplication {
     user?: User; 
     profile?: ApplicantProfile;
 }
+
+export interface Employee {
+    id: number;
+    employee_id: string;
+    full_name: string;
+    email: string;
+    phone: string;
+    department: string;
+    position: string;
+    join_date: string | null;
+    salary: number;
+    status: 'active' | 'resigned' | 'terminated';
+    address: string;
+}

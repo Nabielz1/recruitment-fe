@@ -1,6 +1,7 @@
 import { Outlet, NavLink, useNavigate, Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import { logoutUser } from '../../services/auth/authService';
+import "../../styles/App.css";
 
 const Layout = () => {
   const { user, logout } = useAuth();
@@ -18,12 +19,11 @@ const Layout = () => {
   
   const activeAdminLinkStyle = "inline-flex items-center px-1 pt-1 border-b-2 border-red-500 text-sm font-medium text-red-600";
   const inactiveAdminLinkStyle = "inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-red-500 hover:border-red-300 hover:text-red-700";
-
-  const isAdminPath = location.pathname.startsWith('/admin');
-
+  
   return (
-    <div className="min-h-screen bg-gray-50">
-      <nav className="bg-white shadow-sm">
+    // Menggunakan Flexbox untuk tata letak kolom (nav di atas, konten di bawah)
+    <div className="min-h-screen bg-gray-50 flex flex-col">
+      <nav className="bg-white shadow-sm flex-shrink-0">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16">
             <div className="flex">
@@ -48,12 +48,20 @@ const Layout = () => {
                   </>
                 )}
                 {user && (user.role === 'admin' || user.role === 'hrd') && (
-                    <NavLink 
-                        to="/admin/dashboard" 
-                        className={isAdminPath ? activeAdminLinkStyle : inactiveAdminLinkStyle}
-                    >
-                        Admin Dashboard
-                    </NavLink>
+                    <>
+                        <NavLink 
+                            to="/admin/dashboard" 
+                            className={location.pathname.startsWith("/admin/dashboard") ? activeAdminLinkStyle : inactiveAdminLinkStyle}
+                        >
+                            Admin Dashboard
+                        </NavLink>
+                        <NavLink 
+                            to="/admin/employees" 
+                            className={location.pathname.startsWith("/admin/employees") ? activeAdminLinkStyle : inactiveAdminLinkStyle}
+                        >
+                            Employee Management
+                        </NavLink>
+                    </>
                 )}
               </div>
             </div>
@@ -66,7 +74,8 @@ const Layout = () => {
           </div>
         </div>
       </nav>
-      <main className="py-10">
+      {/* Konten utama yang akan mengisi sisa ruang dan dapat digulir jika perlu */}
+      <main className="flex-grow overflow-y-auto py-10">
         <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
           <Outlet />
         </div>
