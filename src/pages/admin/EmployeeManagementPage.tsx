@@ -16,7 +16,7 @@ import Select from '../../components/ui/Select';
 import "../../styles/App.css";
 
 type EmployeeFormInputs = Omit<Employee, 'id' | 'join_date' | 'status'> & {
-    join_date: string; // Ubah tipe data join_date menjadi string untuk input form
+    join_date: string;
     status: 'active' | 'resigned' | 'terminated';
 };
 
@@ -28,7 +28,6 @@ const EmployeeManagementPage: React.FC = () => {
     const [editingEmployeeId, setEditingEmployeeId] = useState<number | null>(null);
     const [fileToImport, setFileToImport] = useState<File | null>(null);
 
-    // Hapus 'setValue' dari deklarasi karena 'reset' sudah cukup
     const { register, handleSubmit, reset, formState: { errors } } = useForm<EmployeeFormInputs>();
 
     const fetchEmployees = async () => {
@@ -89,8 +88,8 @@ const EmployeeManagementPage: React.FC = () => {
                 phone: data.phone,
                 department: data.department,
                 position: data.position,
-                join_date: data.join_date, // Nilai dari input date sudah dalam format YYYY-MM-DD
-                salary: parseFloat(String(data.salary)), 
+                join_date: data.join_date,
+                salary: parseFloat(String(data.salary)),
                 address: data.address,
                 status: data.status,
             };
@@ -185,18 +184,20 @@ const EmployeeManagementPage: React.FC = () => {
     
     return (
         <div className="bg-white p-6 sm:p-8 rounded-lg shadow-md">
-            <div className="flex justify-between items-center mb-6">
-                <h1 className="text-2xl font-bold text-gray-800">Employee Management</h1>
-                <div className="flex space-x-2">
-                    <input type="file" accept=".csv" onChange={handleFileChange} className="hidden" id="import-file-input" />
-                    <label htmlFor="import-file-input" className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300 cursor-pointer">
-                        Choose CSV
-                    </label>
-                    {fileToImport && (
-                        <button onClick={handleImport} className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700">
-                            Import
-                        </button>
-                    )}
+            <div className="flex justify-between items-center mb-6 flex-wrap">
+                <h1 className="text-2xl font-bold text-gray-800 mb-4 sm:mb-0">Employee Management</h1>
+                <div className="flex space-x-2 flex-wrap gap-2">
+                    <div className="flex space-x-2">
+                        <input type="file" accept=".csv" onChange={handleFileChange} className="hidden" id="import-file-input" />
+                        <label htmlFor="import-file-input" className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300 cursor-pointer">
+                            {fileToImport ? fileToImport.name : 'Choose CSV'}
+                        </label>
+                        {fileToImport && (
+                            <button onClick={handleImport} className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700">
+                                Import
+                            </button>
+                        )}
+                    </div>
                     <button onClick={handleExport} className="px-4 py-2 text-sm font-medium text-white bg-green-600 rounded-md hover:bg-green-700">
                         Export CSV
                     </button>
@@ -250,9 +251,9 @@ const EmployeeManagementPage: React.FC = () => {
 
             {/* Modal untuk Add/Edit Employee */}
             {isModalOpen && (
-                <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center">
+                <div className="fixed inset-0 z-50 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center">
                     <div className="relative p-8 w-full max-w-lg mx-auto bg-white rounded-md shadow-lg">
-                        <div className="flex justify-between items-start mb-4">
+                        <div className="flex justify-between items-start mb-4 border-b pb-4">
                             <h3 className="text-2xl font-bold">{isEditMode ? 'Edit Employee' : 'Add New Employee'}</h3>
                             <button onClick={handleCloseModal} className="text-gray-400 hover:text-gray-600">
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -260,15 +261,18 @@ const EmployeeManagementPage: React.FC = () => {
                                 </svg>
                             </button>
                         </div>
-                        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-                            <Input label="Employee ID" id="employee_id" {...register('employee_id', { required: true })} />
-                            {errors.employee_id && <span className="text-red-500 text-xs">Employee ID is required</span>}
+                        <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="col-span-2">
+                                <Input label="Employee ID" id="employee_id" {...register('employee_id', { required: true })} />
+                                {errors.employee_id && <span className="text-red-500 text-xs">Employee ID is required</span>}
+                            </div>
 
-                            <Input label="Full Name" id="full_name" {...register('full_name', { required: true })} />
-                            {errors.full_name && <span className="text-red-500 text-xs">Full Name is required</span>}
+                            <div className="col-span-2">
+                                <Input label="Full Name" id="full_name" {...register('full_name', { required: true })} />
+                                {errors.full_name && <span className="text-red-500 text-xs">Full Name is required</span>}
+                            </div>
 
                             <Input label="Email" id="email" type="email" {...register('email')} />
-
                             <Input label="Phone" id="phone" {...register('phone')} />
 
                             <Input label="Department" id="department" {...register('department', { required: true })} />
@@ -287,7 +291,7 @@ const EmployeeManagementPage: React.FC = () => {
                             <Select label="Status" id="status" options={statusOptions} {...register('status', { required: true })} />
                             {errors.status && <span className="text-red-500 text-xs">Status is required</span>}
 
-                            <div className="flex justify-end space-x-2 mt-6">
+                            <div className="col-span-2 flex justify-end space-x-2 mt-6">
                                 <button type="button" onClick={handleCloseModal} className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300">
                                     Cancel
                                 </button>
